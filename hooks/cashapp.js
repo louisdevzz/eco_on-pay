@@ -6,10 +6,17 @@ import BigNumber from "bignumber.js";
 
 export const useCashApp = () =>{
     const {connected, publicKey, sendTransaction} = useWallet()
+    const [useAddress, setUseAddress] = useState('Not Data!')
     const {connection} = useConnection()
     const [receiver, setReceiver] = useState('')
     const [amount, setAmount] = useState(0)
     const [transactionPurpose, setTransactionPurpose] = useState('')
+
+    useEffect(()=>{
+        if(connected){
+          setUseAddress(publicKey.toString())
+        }
+      })
 
     const useLocalStorage = (storageKey, fallbackState)=>{
         const [value, setValue] = useState(
@@ -24,6 +31,7 @@ export const useCashApp = () =>{
     const [transaction, setTransaction] = useLocalStorage("transaction",[])
 
     //create the transaction to send to our wallet and we can sign it from there!
+
     const makeTransaction = async(fromWallet, toWallet, amount, reference) =>{
         const network = WalletAdapterNetwork.Devnet
         const endpoint = clusterApiUrl(network)
@@ -106,6 +114,8 @@ export const useCashApp = () =>{
         setTransactionPurpose,
         doTransaction,
         transaction,
-        setTransaction
+        setTransaction,
+        setUseAddress,
+        useAddress
     }
 }
