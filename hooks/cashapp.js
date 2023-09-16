@@ -1,8 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet,useAnchorWallet } from "@solana/wallet-adapter-react";
 import { clusterApiUrl, Connection,Keypair,LAMPORTS_PER_SOL,PublicKey,SystemProgram, Transaction } from "@solana/web3.js";
 import BigNumber from "bignumber.js";
+import * as anchor from "@project-serum/anchor"
+import idl from '../idl.json'
+import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
+import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
+
+
+
+const PROGRAM_KEY = new PublicKey(idl.metadata.address)
 
 export const useCashApp = () =>{
     const {connected, publicKey, sendTransaction} = useWallet()
@@ -11,12 +19,76 @@ export const useCashApp = () =>{
     const [receiver, setReceiver] = useState('')
     const [amount, setAmount] = useState(0)
     const [transactionPurpose, setTransactionPurpose] = useState('')
+    const [user, setUser] = useState()
+    const [initialized, setInitialized] = useState(false)
+    const [transactionPending, setTransactionPending] = useState(false)
+
+
+    const anchorWallet = useAnchorWallet()
+    const program = useMemo(()=>{
+        if(anchorWallet){
+            const provider = new anchor.AnchorProvider(connection,anchorWallet,anchor.AnchorProvider.defaultOptions())
+            return new anchor.Program(idl,PROGRAM_KEY,provider)
+        }
+    },[connection,anchorWallet])
 
     useEffect(()=>{
+        const start = async ()=>{
+            if (program && publicKey){
+                try{
+                    setTransactionPending(true)
+                    //check if there is a user account
+                    const [userPda] = await findProgramAddressSync([utf8.encode("user"), publicKey.toBuffer()],program.programId)
+
+                    const user = await program.account.userAccount.fetch(userPda)
+                    if (user){
+                        setInitialized(true)
+                    }
+                    console.log(user)
+                }catch(err){
+                    console.log("NO user!") 
+                    setInitialized(false)
+                }
+                finally{
+                    setTransactionPending(false)
+                }
+            }
+        }
+        start()
         if(connected){
           setUseAddress(publicKey.toString())
+          
         }
-      })
+    },[])
+
+    const initUser = async()=>{
+        console.log("INITING USER")
+        if(program && publicKey){
+            try{
+                setTransactionPending(true)
+                const name = "hoai mong"
+                const avatar = "https://api.dicebear.com/7.x/pixel-art/svg"
+                const [userPda] = await findProgramAddressSync([utf8.encode("user"), publicKey.toBuffer()],program.programId)
+
+                //console.log(userPda)
+                await program.methods
+                .initUser(name,avatar)
+                .accounts({
+                    userAccount: userPda,
+                    authority: publicKey,
+                    systemProgram: SystemProgram.programId,
+                })
+                .rpc()
+                setInitialized(true)
+            }
+            catch(err){
+                console.log(err)
+            }
+            finally{
+                setTransactionPending(false)
+            }
+        }
+    }
 
     const useLocalStorage = (storageKey, fallbackState)=>{
         const [value, setValue] = useState(
@@ -116,6 +188,7 @@ export const useCashApp = () =>{
         transaction,
         setTransaction,
         setUseAddress,
-        useAddress
+        useAddress,
+        initUser
     }
 }
