@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useConnection, useWallet,useAnchorWallet } from "@solana/wallet-adapter-react";
+import { TOKEN_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
 import { clusterApiUrl, Connection,Keypair,LAMPORTS_PER_SOL,PublicKey,SystemProgram, Transaction } from "@solana/web3.js";
 import BigNumber from "bignumber.js";
 import * as anchor from "@project-serum/anchor"
@@ -12,6 +13,7 @@ import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 
 const PROGRAM_KEY = new PublicKey(idl.metadata.address)
 
+
 export const useCashApp = () =>{
     const {connected, publicKey, sendTransaction} = useWallet()
     const [useAddress, setUseAddress] = useState('Not Data!')
@@ -22,6 +24,9 @@ export const useCashApp = () =>{
     const [user, setUser] = useState()
     const [initialized, setInitialized] = useState(false)
     const [transactionPending, setTransactionPending] = useState(false)
+    const [lastProductid, setLastProductid] = useState(0)
+    const [product, setProduct] = useState([])
+
 
 
     const anchorWallet = useAnchorWallet()
@@ -32,25 +37,33 @@ export const useCashApp = () =>{
         }
     },[connection,anchorWallet])
 
+
+
     useEffect(()=>{
         const start = async ()=>{
+            
             if (program && publicKey){
                 try{
-                    setTransactionPending(true)
+                    //setTransactionPending(true)
                     //check if there is a user account
                     const [userPda] = await findProgramAddressSync([utf8.encode("user"), publicKey.toBuffer()],program.programId)
 
                     const user = await program.account.userAccount.fetch(userPda)
                     if (user){
                         setInitialized(true)
+                        setUser(user)
+                        setLastProductid(user.lastProductId)
+                        
+                        const productAccount = await program.account.productAccount.all()
+                        setProduct(productAccount)
+                        console.log("productAccount: ",productAccount)
                     }
-                    console.log(user)
                 }catch(err){
                     console.log("NO user!") 
                     setInitialized(false)
                 }
                 finally{
-                    setTransactionPending(false)
+                    //setTransactionPending(false)
                 }
             }
         }
@@ -59,18 +72,17 @@ export const useCashApp = () =>{
           setUseAddress(publicKey.toString())
           
         }
-    },[])
+    },[program,publicKey, transactionPending])
+    //program,publicKey, transactionPending
 
-    const initUser = async()=>{
+
+    const initUser = async(name, avatar)=>{
         console.log("INITING USER")
         if(program && publicKey){
             try{
                 setTransactionPending(true)
-                const name = "hoai mong"
-                const avatar = "https://api.dicebear.com/7.x/pixel-art/svg"
                 const [userPda] = await findProgramAddressSync([utf8.encode("user"), publicKey.toBuffer()],program.programId)
 
-                //console.log(userPda)
                 await program.methods
                 .initUser(name,avatar)
                 .accounts({
@@ -80,6 +92,36 @@ export const useCashApp = () =>{
                 })
                 .rpc()
                 setInitialized(true)
+            }
+            catch(err){
+                console.log(err)
+            }
+            finally{
+                setTransactionPending(false)
+            }
+        }
+    }
+
+    const createProduct = async(tilte, price, description, amount, color)=>{
+        console.log("Creating Product")
+        if(program && publicKey){
+            try{
+                setTransactionPending(true)
+                const [userPda] = findProgramAddressSync([utf8.encode("user"), publicKey.toBuffer()],program.programId)
+
+                const [product_data] = findProgramAddressSync([utf8.encode("product"), publicKey.toBuffer(),
+                Uint8Array.from([lastProductid])],
+                program.programId)
+                //console.log(userPda)
+                await program.methods
+                .createProduct(tilte,price,description,amount,color)
+                .accounts({
+                    productAccount: product_data,
+                    userAccount: userPda,
+                    authority: publicKey,
+                    systemProgram: SystemProgram.programId,
+                })
+                .rpc()
             }
             catch(err){
                 console.log(err)
@@ -189,6 +231,8 @@ export const useCashApp = () =>{
         setTransaction,
         setUseAddress,
         useAddress,
-        initUser
+        initUser,
+        createProduct,
+        product
     }
 }

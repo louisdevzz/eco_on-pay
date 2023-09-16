@@ -1,39 +1,103 @@
 {
-    "version": "0.1.0",
-    "name": "product_sol",
-    "constants": [
-      {
-        "name": "USER_SEED",
-        "type": "bytes",
-        "value": "[117, 115, 101, 114]"
-      },
-      {
-        "name": "PRODUCT_SEED",
-        "type": "bytes",
-        "value": "[112, 114, 111, 100, 117, 99, 116]"
-      }
-    ],
-    "instructions": [
-      {
-        "name": "initUser",
-        "accounts": [
-          {
-            "name": "userAccount",
-            "isMut": true,
-            "isSigner": false
-          },
-          {
-            "name": "authority",
-            "isMut": true,
-            "isSigner": true
-          },
-          {
-            "name": "systemProgram",
-            "isMut": false,
-            "isSigner": false
-          }
-        ],
-        "args": [
+  "version": "0.1.0",
+  "name": "product_sol",
+  "constants": [
+    {
+      "name": "USER_SEED",
+      "type": "bytes",
+      "value": "[117, 115, 101, 114]"
+    },
+    {
+      "name": "PRODUCT_SEED",
+      "type": "bytes",
+      "value": "[112, 114, 111, 100, 117, 99, 116]"
+    }
+  ],
+  "instructions": [
+    {
+      "name": "initUser",
+      "accounts": [
+        {
+          "name": "userAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "avatar",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "createProduct",
+      "accounts": [
+        {
+          "name": "productAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "price",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "amount",
+          "type": "u8"
+        },
+        {
+          "name": "color",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "UserAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
             "name": "name",
             "type": "string"
@@ -41,37 +105,42 @@
           {
             "name": "avatar",
             "type": "string"
-          }
-        ]
-      },
-      {
-        "name": "createProduct",
-        "accounts": [
-          {
-            "name": "productAccount",
-            "isMut": true,
-            "isSigner": false
-          },
-          {
-            "name": "userAccount",
-            "isMut": true,
-            "isSigner": false
           },
           {
             "name": "authority",
-            "isMut": true,
-            "isSigner": true
+            "type": "publicKey"
           },
           {
-            "name": "systemProgram",
-            "isMut": false,
-            "isSigner": false
+            "name": "lastProductId",
+            "type": "u8"
+          },
+          {
+            "name": "productCount",
+            "type": "u8"
           }
-        ],
-        "args": [
+        ]
+      }
+    },
+    {
+      "name": "ProductAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u8"
+          },
           {
             "name": "title",
             "type": "string"
+          },
+          {
+            "name": "user",
+            "type": "publicKey"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
           },
           {
             "name": "price",
@@ -91,78 +160,9 @@
           }
         ]
       }
-    ],
-    "accounts": [
-      {
-        "name": "UserAccount",
-        "type": {
-          "kind": "struct",
-          "fields": [
-            {
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "name": "avatar",
-              "type": "string"
-            },
-            {
-              "name": "authority",
-              "type": "publicKey"
-            },
-            {
-              "name": "lastProductId",
-              "type": "u8"
-            },
-            {
-              "name": "productCount",
-              "type": "u8"
-            }
-          ]
-        }
-      },
-      {
-        "name": "ProductAccount",
-        "type": {
-          "kind": "struct",
-          "fields": [
-            {
-              "name": "id",
-              "type": "u8"
-            },
-            {
-              "name": "title",
-              "type": "string"
-            },
-            {
-              "name": "user",
-              "type": "publicKey"
-            },
-            {
-              "name": "authority",
-              "type": "publicKey"
-            },
-            {
-              "name": "price",
-              "type": "string"
-            },
-            {
-              "name": "description",
-              "type": "string"
-            },
-            {
-              "name": "amount",
-              "type": "u8"
-            },
-            {
-              "name": "color",
-              "type": "string"
-            }
-          ]
-        }
-      }
-    ],
-    "metadata": {
-      "address": "2qGQfDz8y2T5ZQ4YZ7qcKcxC2Qn9SoS16V9o46oCB76u"
     }
+  ],
+  "metadata":{
+    "address":"7iiaUpPVf7SeZKqL96oA2sdCG1VQ9vM3vCeKy4xRHQrV"
+  }
 }

@@ -1,8 +1,7 @@
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
 import { useCashApp } from "../hooks/cashapp"
-
-
-
+import { useState } from "react"
+import Image from "next/image"
 
 const style = {
   //px-3 py-2 w-[400px] rounded-lg h-[50px] border boder-gray-200 focus:outline-none focus:border-[#0abde3]
@@ -18,6 +17,21 @@ const style = {
 }
 
 export default function Test() {
+
+
+  //create user
+  const [name, setName] = useState('')
+  const [avatar, setAvatar] = useState('')
+
+  //create produdct
+  const [titile, setTitle] = useState('')
+  const [price, setPrice] = useState('')
+  const [description, setDescription] = useState('')
+  const [quanlity, setQuanlity] = useState(0)
+  const [color, setColor] = useState('')
+
+  //console.log(titile)
+
   const {
     connected, 
     publicKey, 
@@ -30,7 +44,9 @@ export default function Test() {
     doTransaction,
     transaction,
     useAddress,
-    initUser
+    initUser,
+    createProduct,
+    product
     
   } = useCashApp()
 
@@ -52,6 +68,10 @@ export default function Test() {
     setReceiver("")
     setTransactionPurpose("")
   }
+
+  //console.log("Data Product: ",product)
+
+ 
 
   return (
     <>
@@ -82,17 +102,20 @@ export default function Test() {
 
       </div>
       <div className="mt-10 flex flex-col">
-        <input style={style.input} type="text" placeholder="enter your name"/>
-        <input style={style.input} type="text" placeholder="enter your avatar link "/>
-        <input type="submit" value="Create user" onClick={()=>{initUser()}} className="mt-5 w-[200px] h-[50px] rounded-lg text-md cursor-pointer font-bold bg-[#1abc9c] text-white"/>
+        <input style={style.input} type="text" onChange={(e)=>setName(e.target.value)} placeholder="enter your name"/>
+        <input style={style.input} type="text" onChange={(e)=>setAvatar(e.target.value)} placeholder="enter your avatar link "/>
+        <input type="submit" value="Create user" onClick={()=>{initUser(name,avatar)}} className="mt-5 w-[200px] h-[50px] rounded-lg text-md cursor-pointer font-bold bg-[#1abc9c] text-white"/>
       </div>
       <div className="mt-10 flex flex-col">
-        <input style={style.input} type="text" placeholder="enter titlte product"/>
-        <input style={style.input} type="text" placeholder="enter description product"/>
-        <input style={style.input} type="text" placeholder="enter price product"/>
-        <input style={style.input} type="number" placeholder="enter amount product"/>
-        <input style={style.input} type="text" placeholder="enter color product"/>
-        <input type="submit" value="Create product" className="mt-5 w-[200px] h-[50px] rounded-lg text-md cursor-pointer font-bold bg-[#1abc9c] text-white"/>
+        <input style={style.input} type="text" onChange={(e)=>setTitle(e.target.value)} placeholder="enter titlte product"/>
+        <input style={style.input} type="text" onChange={(e)=>setDescription(e.target.value)} placeholder="enter description product"/>
+        <input style={style.input} type="text" onChange={(e)=>setPrice(e.target.value)} placeholder="enter price product"/>
+        <input style={style.input} type="number" onChange={(e)=>setQuanlity(e.target.value)} placeholder="enter amount product"/>
+        <input style={style.input} type="text" onChange={(e)=>setColor(e.target.value)} placeholder="enter color product"/>
+        <input type="submit" value="Create product" onClick={()=>{createProduct(titile,price,description,quanlity,color)}} className="mt-5 w-[200px] h-[50px] rounded-lg text-md cursor-pointer font-bold bg-[#1abc9c] text-white"/>
+      </div>
+      <div className="mt-5">
+        <img style={{width:"500px",height: "500px"}} src="https://moccasin-handsome-jackal-895.mypinata.cloud/ipfs/QmP8UPD5HBeYqmNF5xhZyeCRqLso5BHLduDALG3CCsxqYG" alt=""/>
       </div>
     </div>
     </>
