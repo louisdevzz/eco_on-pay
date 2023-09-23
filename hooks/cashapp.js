@@ -102,22 +102,51 @@ export const useCashApp = () =>{
         }
     }
 
-    const createProduct = async(tilte, price, description, amount, color)=>{
+    const initSeller = async(nameshop)=>{
+        console.log("INITING SELLER")
+        if(program && publicKey){
+            try{
+                setTransactionPending(true)
+                const [userPda] = await findProgramAddressSync([utf8.encode("user"), publicKey.toBuffer()],program.programId)
+                
+                const [sellerPda] = await findProgramAddressSync([utf8.encode("seller"), publicKey.toBuffer()],program.programId)
+                await program.methods
+                .initSeller(nameshop)
+                .accounts({
+                    sellerAccount: sellerPda,
+                    userAccount: userPda,
+                    authority: publicKey,
+                    systemProgram: SystemProgram.programId,
+                })
+                .rpc()
+                setInitialized(true)
+            }
+            catch(err){
+                console.log(err)
+            }
+            finally{
+                setTransactionPending(false)
+            }
+        }
+    }
+
+    // titile,about,price,color,image,category,size,quanlity,votes
+    const createProduct = async(title,about,price,color,image,category,size,quanlity,votes)=>{
         console.log("Creating Product")
         if(program && publicKey){
             try{
                 setTransactionPending(true)
-                const [userPda] = findProgramAddressSync([utf8.encode("user"), publicKey.toBuffer()],program.programId)
+                const [sellerPda] = await findProgramAddressSync([utf8.encode("seller"), publicKey.toBuffer()],program.programId)
 
                 const [product_data] = findProgramAddressSync([utf8.encode("product"), publicKey.toBuffer(),
                 Uint8Array.from([lastProductid])],
                 program.programId)
                 //console.log(userPda)
                 await program.methods
-                .createProduct(tilte,price,description,amount,color)
+                .createProduct(title,about,price,color,image,category,size,quanlity,votes)
                 .accounts({
                     productAccount: product_data,
-                    userAccount: userPda,
+                    sellerAccount: sellerPda,
                     authority: publicKey,
                     systemProgram: SystemProgram.programId,
                 })
@@ -233,6 +262,7 @@ export const useCashApp = () =>{
         useAddress,
         initUser,
         createProduct,
-        product
+        product,
+        initSeller
     }
 }

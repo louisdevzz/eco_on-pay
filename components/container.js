@@ -1,77 +1,122 @@
+import Link from "next/link";
+import { useCashApp } from "../hooks/cashapp"
 
-const products = [
-    {
-      id: 1,
-      name: 'Basic Tee',
-      href: '#',
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-      imageAlt: "Front of men's Basic Tee in black.",
-      price: '$35',
-      color: 'Black',
-    },
-    {
-        id: 2,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-    },
-    {
-        id: 3,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-    },
-    {
-        id: 4,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-    },
 
-  ]
-  
-export default function Container() {
-    return (
-      <div className="bg-white z-10">
-        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">Popular products</h2>
-  
-          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {products.map((product) => (
-              <div key={product.id} className="group">
-                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                  <img
-                    src={product.imageSrc}
-                    alt={product.imageAlt}
-                    className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                  />
+export default function HeroSelection(){
+    const {product} = useCashApp()  
+    return(
+        <div className="min-h-screen bg-gray-100 flex flex-co justify-center">
+            <div className="relative m-3 flex flex-wrap min-w-screen justify-center">
+                {product.map((data)=>{
+                    return(
+                        <Link href={`/product/${data?.account.id}`} class="relative max-w-sm max-h-[450px] min-w-[340px] bg-white shadow-md rounded-3xl p-2 mx-1 my-3 cursor-pointer">
+                            <div class="overflow-x-hidden rounded-2xl relative">
+                                <img class="h-80 rounded-2xl w-full object-cover" src={`${data?.account.images}`} alt="hinh san pham"/>
+                                <p class="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:opacity-50 opacity-70" fill="none" viewBox="0 0 24 24" stroke="black">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </p>
+                            </div>
+                            <div class="mt-4 pl-2 mb-2 flex justify-between ">
+                                <div>
+                                <p class="text-lg font-semibold text-gray-900 mb-0">{data?.account.title}</p>
+                                <p class="text-md text-gray-800 mt-0">${data?.account.price}</p>
+                                </div>
+                                <div class="flex flex-col-reverse mb-1 mr-4 group cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:opacity-70" fill="none" viewBox="0 0 24 24" stroke="gray">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                                </div>
+                            </div>
+                        </Link>
+                    )
+                })}
+                {/* <Link href={'https://tiki.vn/ba-lo-cap-chong-gu-cho-be-happy-p94198594.html?spid=94198603'} class="relative max-w-sm max-h-[450px] min-w-[340px] bg-white shadow-md rounded-3xl p-2 mx-1 my-3 cursor-pointer">
+                    <div class="overflow-x-hidden rounded-2xl relative">
+                        <img class="h-80 rounded-2xl w-full object-cover" src="https://pixahive.com/wp-content/uploads/2020/10/Gym-shoes-153180-pixahive.jpg"/>
+                        <p class="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:opacity-50 opacity-70" fill="none" viewBox="0 0 24 24" stroke="black">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        </p>
+                    </div>
+                    <div class="mt-4 pl-2 mb-2 flex justify-between ">
+                        <div>
+                        <p class="text-lg font-semibold text-gray-900 mb-0">Product Name</p>
+                        <p class="text-md text-gray-800 mt-0">$340</p>
+                        </div>
+                        <div class="flex flex-col-reverse mb-1 mr-4 group cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:opacity-70" fill="none" viewBox="0 0 24 24" stroke="gray">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        </div>
+                    </div>
+                </Link> */}
+                <div class="relative max-h-[450px] max-w-sm min-w-[340px] bg-white shadow-md rounded-3xl p-2 mx-1 my-3 cursor-pointer">
+                    <div class="overflow-x-hidden rounded-2xl relative">
+                        <img class="h-80 rounded-2xl w-full object-cover" src="https://pixahive.com/wp-content/uploads/2020/10/Gym-shoes-153180-pixahive.jpg"/>
+                        <p class="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:opacity-50 opacity-70" fill="none" viewBox="0 0 24 24" stroke="black">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        </p>
+                    </div>
+                    <div class="mt-4 pl-2 mb-2 flex justify-between ">
+                        <div>
+                        <p class="text-lg font-semibold text-gray-900 mb-0">Product Name</p>
+                        <p class="text-md text-gray-800 mt-0">$340</p>
+                        </div>
+                        <div class="flex flex-col-reverse mb-1 mr-4 group cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:opacity-70" fill="none" viewBox="0 0 24 24" stroke="gray">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        </div>
+                    </div>
                 </div>
-                <div className="mt-4 flex justify-between">
-                  <div>
-                    <h3 className="text-sm text-gray-700">
-                      <a href={product.href}>
-                        <span aria-hidden="true" className="absolute inset-0" />
-                        {product.name}
-                      </a>
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500">{product.color}</p>
-                  </div>
-                  <p className="text-sm font-medium text-gray-900">{product.price}</p>
+                <div class="relative max-h-[450px] max-w-sm min-w-[340px] bg-white shadow-md rounded-3xl p-2 mx-1 my-3 cursor-pointer">
+                    <div class="overflow-x-hidden rounded-2xl relative">
+                        <img class="h-80 rounded-2xl w-full object-cover" src="https://pixahive.com/wp-content/uploads/2020/10/Gym-shoes-153180-pixahive.jpg"/>
+                        <p class="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:opacity-50 opacity-70" fill="none" viewBox="0 0 24 24" stroke="black">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        </p>
+                    </div>
+                    <div class="mt-4 pl-2 mb-2 flex justify-between ">
+                        <div>
+                        <p class="text-lg font-semibold text-gray-900 mb-0">Product Name</p>
+                        <p class="text-md text-gray-800 mt-0">$340</p>
+                        </div>
+                        <div class="flex flex-col-reverse mb-1 mr-4 group cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:opacity-70" fill="none" viewBox="0 0 24 24" stroke="gray">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            ))}
-          </div>
+                <div class="relative max-h-[450px] max-w-sm min-w-[340px] bg-white shadow-md rounded-3xl p-2 mx-1 my-3 cursor-pointer">
+                    <div class="overflow-x-hidden rounded-2xl relative">
+                        <img class="h-80 rounded-2xl w-full object-cover" src="https://pixahive.com/wp-content/uploads/2020/10/Gym-shoes-153180-pixahive.jpg"/>
+                        <p class="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:opacity-50 opacity-70" fill="none" viewBox="0 0 24 24" stroke="black">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        </p>
+                    </div>
+                    <div class="mt-4 pl-2 mb-2 flex justify-between ">
+                        <div>
+                        <p class="text-lg font-semibold text-gray-900 mb-0">Product Name</p>
+                        <p class="text-md text-gray-800 mt-0">$340</p>
+                        </div>
+                        <div class="flex flex-col-reverse mb-1 mr-4 group cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:opacity-70" fill="none" viewBox="0 0 24 24" stroke="gray">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     )
-  }
-  
+}

@@ -1,11 +1,16 @@
 {
   "version": "0.1.0",
-  "name": "product_sol",
+  "name": "product",
   "constants": [
     {
       "name": "USER_SEED",
       "type": "bytes",
       "value": "[117, 115, 101, 114]"
+    },
+    {
+      "name": "SELLER_SEED",
+      "type": "bytes",
+      "value": "[115, 101, 108, 108, 101, 114]"
     },
     {
       "name": "PRODUCT_SEED",
@@ -45,10 +50,10 @@
       ]
     },
     {
-      "name": "createProduct",
+      "name": "initSeller",
       "accounts": [
         {
-          "name": "productAccount",
+          "name": "sellerAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -70,7 +75,42 @@
       ],
       "args": [
         {
+          "name": "nameShop",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "createProduct",
+      "accounts": [
+        {
+          "name": "productAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "sellerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
           "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "about",
           "type": "string"
         },
         {
@@ -78,15 +118,27 @@
           "type": "string"
         },
         {
-          "name": "description",
+          "name": "color",
           "type": "string"
         },
         {
-          "name": "amount",
-          "type": "u8"
+          "name": "images",
+          "type": "string"
         },
         {
-          "name": "color",
+          "name": "category",
+          "type": "string"
+        },
+        {
+          "name": "size",
+          "type": "string"
+        },
+        {
+          "name": "quanlity",
+          "type": "string"
+        },
+        {
+          "name": "votes",
           "type": "string"
         }
       ]
@@ -111,12 +163,48 @@
             "type": "publicKey"
           },
           {
+            "name": "role",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SellerAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "avatar",
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "type": "publicKey"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "nameShop",
+            "type": "string"
+          },
+          {
             "name": "lastProductId",
             "type": "u8"
           },
           {
             "name": "productCount",
             "type": "u8"
+          },
+          {
+            "name": "role",
+            "type": "string"
           }
         ]
       }
@@ -131,10 +219,6 @@
             "type": "u8"
           },
           {
-            "name": "title",
-            "type": "string"
-          },
-          {
             "name": "user",
             "type": "publicKey"
           },
@@ -143,19 +227,39 @@
             "type": "publicKey"
           },
           {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "about",
+            "type": "string"
+          },
+          {
             "name": "price",
             "type": "string"
           },
           {
-            "name": "description",
+            "name": "color",
             "type": "string"
           },
           {
-            "name": "amount",
-            "type": "u8"
+            "name": "images",
+            "type": "string"
           },
           {
-            "name": "color",
+            "name": "category",
+            "type": "string"
+          },
+          {
+            "name": "size",
+            "type": "string"
+          },
+          {
+            "name": "quanlity",
+            "type": "string"
+          },
+          {
+            "name": "votes",
             "type": "string"
           }
         ]
@@ -163,6 +267,6 @@
     }
   ],
   "metadata":{
-    "address":"7iiaUpPVf7SeZKqL96oA2sdCG1VQ9vM3vCeKy4xRHQrV"
+    "address":"9p7wYZoehkiuqbDumiN9tYZANnWhB1CNMLq31B9zfft2"
   }
 }
