@@ -1,20 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useConnection, useWallet,useAnchorWallet } from "@solana/wallet-adapter-react";
-import { TOKEN_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
 import { clusterApiUrl, Connection,Keypair,LAMPORTS_PER_SOL,PublicKey,SystemProgram, Transaction } from "@solana/web3.js";
 import BigNumber from "bignumber.js";
 import * as anchor from "@project-serum/anchor"
 import idl from '../idl.json'
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
-
-
+import { useNavigate } from "react-router-dom"
+import Router from "next/router";
 
 const PROGRAM_KEY = new PublicKey(idl.metadata.address)
 
 
 export const useCashApp = () =>{
+    const navigate = useNavigate()
     const {connected, publicKey, sendTransaction} = useWallet()
     const [useAddress, setUseAddress] = useState('Not Data!')
     const {connection} = useConnection()
@@ -47,34 +47,49 @@ export const useCashApp = () =>{
                     //setTransactionPending(true)
                     //check if there is a user account
                     const [userPda] = await findProgramAddressSync([utf8.encode("user"), publicKey.toBuffer()],program.programId)
-                    const [sellerPda] = await findProgramAddressSync([utf8.encode("seller"), publicKey.toBuffer()],program.programId)
-
                     const user = await program.account.userAccount.fetch(userPda)
                     
                     if (user){
-                        setInitialized(true)
                         setUser(user)
-                        const seller = await program.account.sellerAccount.fetch(sellerPda)
-                        if(seller){
-                            setSeller(seller)
-                            setLastProductid(seller.lastProductId)
-                            const productAccount = await program.account.productAccount.all()
-                            setProduct(productAccount)
-                            console.log("productAccount: ",productAccount)
-                        }else{
-                            console.log("NO seller!") 
-                        }
-                        
                     }else{
                         console.log("NO user!") 
                     }
                 }catch(err){
                     
                     setInitialized(false)
-                    console.log(err)
+                    // navigate("/register_user")
+                    console.log("user: ",err)
+                    
                 }
                 finally{
                     //setTransactionPending(false)
+                }
+            }
+            if(program&&publicKey){
+                try{
+                    const [sellerPda] = await findProgramAddressSync([utf8.encode("seller"), publicKey.toBuffer()],program.programId)
+                    const seller = await program.account.sellerAccount.fetch(sellerPda)
+                    if(seller){
+                        setSeller(seller)
+                        setLastProductid(seller.lastProductId)
+                        const productAccount = await program.account.productAccount.all()
+                        setProduct(productAccount)
+                        console.log("productAccount: ",productAccount)
+                    }
+                }catch(err){
+                    console.log("seller: ",err)
+                    const wallet = new PublicKey("YmFta2y8GGaHTfdZpJBj5ws7VQAMj5ygLXy2hvoCHra")
+                    const [sellerPda] = await findProgramAddressSync([utf8.encode("seller"), wallet.toBuffer()],program.programId)
+                    const seller = await program.account.sellerAccount.fetch(sellerPda)
+                    if(seller){
+                        setSeller(seller)
+                        setLastProductid(seller.lastProductId)
+                        const productAccount = await program.account.productAccount.all()
+                        setProduct(productAccount)
+                        console.log("productAccount: ",productAccount)
+                    }else{
+                        console.log("NO seller!") 
+                    }
                 }
             }
         }
@@ -274,6 +289,7 @@ export const useCashApp = () =>{
         createProduct,
         product,
         initSeller,
-        transactionPending
+        transactionPending,
+        program
     }
 }

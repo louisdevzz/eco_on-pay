@@ -2,7 +2,6 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
 import { useCashApp } from "../hooks/cashapp"
 import Link from "next/link"
 
-
 export default function Header(){
   const {connected,publicKey} = useCashApp()
   return(
@@ -10,9 +9,7 @@ export default function Header(){
   <div class="border py-3 px-6">
     <div class="flex justify-between">
       <div class="flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-        </svg>
+        <img style={{width: "60px", height: "60px"}} src={"/img/logo1.png"} alt="logo"/>
         <Link href={'/'} class="ml-2 font-semibold text-[#252C32]">Eco On-Pay</Link>
       </div>
 
@@ -53,7 +50,7 @@ export default function Header(){
           <span class="text-sm font-medium">Cart</span>
         </div>
 
-        <WalletMultiButton>
+        <WalletMultiButton className="bg-[#4094F7]">
           <span className="text-sm px-1 py-2">{connected?truncate(publicKey.toString()):"Select Wallet"}</span>
         </WalletMultiButton>
       </div>
@@ -61,7 +58,6 @@ export default function Header(){
 
     <div class="mt-4 flex items-center justify-between">
       <div class="flex gap-x-8">
-        <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Best seller</span>
         <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">New Releases</span>
         <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Books</span>
         <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Computers</span>
@@ -71,7 +67,7 @@ export default function Header(){
         <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Toys & Games</span>
       </div>
 
-      <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Becoma a seller</span>
+      <Link href={'/seller_onboarding'} class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Becoma a seller</Link>
     </div>
   </div>
 </div>

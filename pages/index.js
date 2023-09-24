@@ -1,11 +1,16 @@
-import Header from "../components/header"
-import Container from "../components/container"
+import Home from "./dashboard"
+import { Route,Routes } from "react-router-dom"
+import RegisterUser from "./register_user"
 
-export default function SignUp(){
+export default function App(){
+
     return(
-        <div className="h-[1500px]">
-            <Header/>
-            <Container/>
-        </div>
+        <>
+            <Routes>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/register_user" element={<RegisterUser/>}/>
+            </Routes>
+            
+        </>
     )
 }
