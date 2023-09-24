@@ -1,6 +1,7 @@
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
 import { useCashApp } from "../hooks/cashapp"
 import Link from "next/link"
+require('@solana/wallet-adapter-react-ui/styles.css')
 
 export default function Header(){
   const {connected,publicKey} = useCashApp()
@@ -50,7 +51,7 @@ export default function Header(){
           <span class="text-sm font-medium">Cart</span>
         </div>
 
-        <WalletMultiButton className="phantom-button">
+        <WalletMultiButton className="wallet-button" >
           <span className="text-sm px-1 py-2">{connected?truncate(publicKey.toString()):"Select Wallet"}</span>
         </WalletMultiButton>
       </div>
