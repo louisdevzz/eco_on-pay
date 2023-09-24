@@ -20,3 +20,18 @@ body {
 margin: 0;
 padding: 0;
 }
+
+.phantom-button {
+  height: inherit !important;
+  padding: inherit !important;
+  background-color: #4094F7 !important;
+  color: white !important;
+}
+
+.phantom-button:hover {
+  background-color: #74aff2 !important;
+}
+
+.phantom-button:hover > span {
+  color: rgb(211, 211, 211) !important;
+} 
