@@ -20,8 +20,8 @@ export const useCashApp = () =>{
     const {connection} = useConnection()
     const [receiver, setReceiver] = useState('')
     const [amount, setAmount] = useState(0)
-    const [transactionPurpose, setTransactionPurpose] = useState('')
     const [user, setUser] = useState()
+    const [seller, setSeller] = useState()
     const [initialized, setInitialized] = useState(false)
     const [transactionPending, setTransactionPending] = useState(false)
     const [lastProductid, setLastProductid] = useState(0)
@@ -47,20 +47,31 @@ export const useCashApp = () =>{
                     //setTransactionPending(true)
                     //check if there is a user account
                     const [userPda] = await findProgramAddressSync([utf8.encode("user"), publicKey.toBuffer()],program.programId)
+                    const [sellerPda] = await findProgramAddressSync([utf8.encode("seller"), publicKey.toBuffer()],program.programId)
 
                     const user = await program.account.userAccount.fetch(userPda)
+                    
                     if (user){
                         setInitialized(true)
                         setUser(user)
-                        setLastProductid(user.lastProductId)
+                        const seller = await program.account.sellerAccount.fetch(sellerPda)
+                        if(seller){
+                            setSeller(seller)
+                            setLastProductid(seller.lastProductId)
+                            const productAccount = await program.account.productAccount.all()
+                            setProduct(productAccount)
+                            console.log("productAccount: ",productAccount)
+                        }else{
+                            console.log("NO seller!") 
+                        }
                         
-                        const productAccount = await program.account.productAccount.all()
-                        setProduct(productAccount)
-                        console.log("productAccount: ",productAccount)
+                    }else{
+                        console.log("NO user!") 
                     }
                 }catch(err){
-                    console.log("NO user!") 
+                    
                     setInitialized(false)
+                    console.log(err)
                 }
                 finally{
                     //setTransactionPending(false)
@@ -109,7 +120,7 @@ export const useCashApp = () =>{
                 setTransactionPending(true)
                 const [userPda] = await findProgramAddressSync([utf8.encode("user"), publicKey.toBuffer()],program.programId)
                 
-                const [sellerPda] = await findProgramAddressSync([utf8.encode("seller"), publicKey.toBuffer()],program.programId)
+                const [sellerPda] =  findProgramAddressSync([utf8.encode("seller"), publicKey.toBuffer()],program.programId)
                 await program.methods
                 .initSeller(nameshop)
                 .accounts({
@@ -130,8 +141,8 @@ export const useCashApp = () =>{
         }
     }
 
-    // titile,about,price,color,image,category,size,quanlity,votes
-    const createProduct = async(title,about,price,color,image,category,size,quanlity,votes)=>{
+    // titile,about,price,color,image,category,quanlity,votes
+    const createProduct = async(title,about,price,color,images,category,quanlity,votes)=>{
         console.log("Creating Product")
         if(program && publicKey){
             try{
@@ -143,7 +154,7 @@ export const useCashApp = () =>{
                 program.programId)
                 //console.log(userPda)
                 await program.methods
-                .createProduct(title,about,price,color,image,category,size,quanlity,votes)
+                .createProduct(title,about,price,color,images,category,quanlity,votes)
                 .accounts({
                     productAccount: product_data,
                     sellerAccount: sellerPda,
@@ -210,7 +221,8 @@ export const useCashApp = () =>{
 
     //create the function to run the transaction. this will added to the button
 
-    const doTransaction = async({amount, receiver, transactionPurpose})=>{
+    const doTransaction = async({amount, receiver})=>{
+        setTransactionPending(true)
         const fromWallet = publicKey
         const toWallet = new PublicKey(receiver)
         const bnAmount = new BigNumber(amount)
@@ -235,7 +247,6 @@ export const useCashApp = () =>{
                 handle: '-',
                 verified: true
             },
-            description: transactionPurpose,
             transactionDate: new Date(),
             status: 'Completed',
             amount: amount,
@@ -244,6 +255,7 @@ export const useCashApp = () =>{
 
         };
         setTransaction([newTransaction, ...transaction])
+        setTransactionPending(false)
     }
 
     return {
@@ -253,8 +265,6 @@ export const useCashApp = () =>{
         setAmount,
         receiver,
         setReceiver,
-        transactionPurpose,
-        setTransactionPurpose,
         doTransaction,
         transaction,
         setTransaction,
@@ -263,6 +273,7 @@ export const useCashApp = () =>{
         initUser,
         createProduct,
         product,
-        initSeller
+        initSeller,
+        transactionPending
     }
 }

@@ -5,7 +5,7 @@ pub mod states;
 
 use crate::{constant::*,states::*};
 
-declare_id!("9p7wYZoehkiuqbDumiN9tYZANnWhB1CNMLq31B9zfft2");
+declare_id!("9YnSd3juLYFgpfux1xrGyVroA3ryMeVZtRWmLHzmvEZC");
 
 #[program]
 pub mod product {
@@ -19,6 +19,17 @@ pub mod product {
         user_account.avatar = avatar;
         user_account.role = "user".parse().unwrap();
         user_account.authority = authority.key();
+
+        user_account.user_idx = user_account.user_idx.checked_add(1).unwrap();
+
+        Ok(())
+    }
+    pub fn update_user(ctx: Context<UpdateUser>, name: String, avatar: String) -> Result<()> {
+        let user_account = &mut ctx.accounts.user_account;
+        let authority = &mut ctx.accounts.authority;
+
+        user_account.name = name;
+        user_account.avatar = avatar;
 
         Ok(())
     }
@@ -37,6 +48,18 @@ pub mod product {
         seller_account.product_count = 0;
         seller_account.authority = authority.key();
 
+        seller_account.seller_idx = seller_account.seller_idx.checked_add(1).unwrap();
+        Ok(())
+    }
+
+    pub fn update_seller(ctx: Context<UpdateSeller>, name_shop: String) -> Result<()> {
+        let seller_account = &mut ctx.accounts.seller_account;
+        seller_account.name_shop = name_shop;
+
+        Ok(())
+    }
+
+    pub fn remove_seller(ctx: Context<RemoveSeller>) -> Result<()> {
         Ok(())
     }
 
@@ -48,9 +71,8 @@ pub mod product {
         color: String,
         images: String,
         category: String,
-        size: String,
         quanlity: String,
-        votes: String,
+        votes: Option<String>,
     ) -> Result<()> {
         let product_account = &mut ctx.accounts.product_account;
         let seller_account = &mut ctx.accounts.seller_account;
@@ -65,12 +87,41 @@ pub mod product {
         product_account.color = color;
         product_account.images = images;
         product_account.category = category;
-        product_account.size = size;
         product_account.quanlity = quanlity;
         product_account.votes = votes;
 
         seller_account.last_product_id = seller_account.last_product_id.checked_add(1).unwrap();
         seller_account.product_count = seller_account.product_count.checked_add(1).unwrap();
+        Ok(())
+    }
+
+    pub fn update_product(
+        ctx: Context<UpdateProduct>,
+        id: u8,
+        title: String,
+        about: String,
+        price: String,
+        color: String,
+        images: String,
+        category: String,
+        quanlity: String,
+    ) -> Result<()> {
+        let product_account = &mut ctx.accounts.product_account;
+        product_account.title = title.clone();
+        product_account.about = about.clone();
+        product_account.price = price.clone();
+        product_account.color = color.clone();
+        product_account.images = images.clone();
+        product_account.category = category.clone();
+        product_account.quanlity = quanlity.clone();
+        Ok(())
+    }
+
+    pub fn remove_product(ctx: Context<RemoveProduct>, id: u8) -> Result<()> {
+        let seller_account = &mut ctx.accounts.seller_account;
+
+        seller_account.last_product_id = seller_account.last_product_id.checked_sub(1).unwrap();
+        seller_account.product_count = seller_account.product_count.checked_sub(1).unwrap();
         Ok(())
     }
 
@@ -86,7 +137,7 @@ pub struct InitUser<'info> {
         payer = authority,
         space = 2312 + 8,
     )]
-    pub user_account: Account<'info, UserAccount>,
+    pub user_account: Box<Account<'info, UserAccount>>,
 
     #[account(mut)]
     pub authority: Signer<'info>,
@@ -102,9 +153,9 @@ pub struct InitSeller<'info> {
         seeds = [SELLER_SEED, authority.key().as_ref()],
         bump,
         payer = authority,
-        space = 2917 + 8,
+        space = 3048,
     )]
-    pub seller_account: Account<'info, SellerAccount>,
+    pub seller_account: Box<Account<'info, SellerAccount>>,
 
     #[account(
         mut,
@@ -112,7 +163,75 @@ pub struct InitSeller<'info> {
         bump,
         has_one = authority,
     )]
-    pub user_account: Account<'info, UserAccount>,
+    pub user_account: Box<Account<'info, UserAccount>>,
+
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction()]
+pub struct UpdateUser<'info> {
+    #[account(
+        mut,
+        seeds = [USER_SEED, authority.key().as_ref()],
+        bump,
+        has_one = authority,
+    )]
+    pub user_account: Box<Account<'info, UserAccount>>,
+
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction()]
+pub struct UpdateSeller<'info> {
+    #[account(
+        mut,
+        seeds = [SELLER_SEED, authority.key().as_ref()],
+        bump,
+        has_one = authority,
+    )]
+    pub seller_account: Box<Account<'info, SellerAccount>>,
+
+    #[account(
+        mut,
+        seeds = [USER_SEED, authority.key().as_ref()],
+        bump,
+        has_one = authority,
+    )]
+    pub user_account: Box<Account<'info, UserAccount>>,
+
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction()]
+pub struct RemoveSeller<'info> {
+    #[account(
+        mut,
+        close = authority,
+        seeds = [SELLER_SEED, authority.key().as_ref()],
+        bump,
+        has_one = authority,
+    )]
+    pub seller_account: Box<Account<'info, SellerAccount>>,
+
+    #[account(
+        mut,
+        seeds = [USER_SEED, authority.key().as_ref()],
+        bump,
+        has_one = authority,
+    )]
+    pub user_account: Box<Account<'info, UserAccount>>,
 
     #[account(mut)]
     pub authority: Signer<'info>,
@@ -130,7 +249,7 @@ pub struct CreateProduct<'info> {
         payer = authority,
         space = 8790 + 8 + 259 + 259,
     )]
-    pub product_account: Account<'info, ProductAccount>,
+    pub product_account: Box<Account<'info, ProductAccount>>,
 
     #[account(
         mut,
@@ -138,7 +257,58 @@ pub struct CreateProduct<'info> {
         bump,
         has_one = authority,
     )]
-    pub seller_account: Account<'info, SellerAccount>,
+    pub seller_account: Box<Account<'info, SellerAccount>>,
+
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction(id:u8)]
+pub struct UpdateProduct<'info> {
+    #[account(
+        mut,
+        seeds = [PRODUCT_SEED, authority.key().as_ref(),&[id].as_ref()],
+        bump,
+        has_one = authority,
+    )]
+    pub product_account: Box<Account<'info, ProductAccount>>,
+
+    #[account(
+        mut,
+        seeds = [SELLER_SEED, authority.key().as_ref()],
+        bump,
+        has_one = authority,
+    )]
+    pub seller_account: Box<Account<'info, SellerAccount>>,
+
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction(id: u8)]
+pub struct RemoveProduct<'info> {
+    #[account(
+        mut,
+        close = authority,
+        seeds = [PRODUCT_SEED, authority.key().as_ref(), &[id].as_ref()],
+        bump,
+        has_one = authority,
+    )]
+    pub product_account: Box<Account<'info, ProductAccount>>,
+
+    #[account(
+        mut,
+        seeds = [SELLER_SEED, authority.key().as_ref()],
+        bump,
+        has_one = authority,
+    )]
+    pub seller_account: Box<Account<'info, SellerAccount>>,
 
     #[account(mut)]
     pub authority: Signer<'info>,

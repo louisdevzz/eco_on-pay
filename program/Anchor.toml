@@ -3,7 +3,7 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-program = "9p7wYZoehkiuqbDumiN9tYZANnWhB1CNMLq31B9zfft2"
+program = "H24WUvSjhgC5GJx8DaDtqvySTAjXMb2pj6VXCKPzTdLw"
 
 [registry]
 url = "https://beta.solpg.io/"

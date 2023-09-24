@@ -50,6 +50,36 @@
       ]
     },
     {
+      "name": "updateUser",
+      "accounts": [
+        {
+          "name": "userAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "avatar",
+          "type": "string"
+        }
+      ]
+    },
+    {
       "name": "initSeller",
       "accounts": [
         {
@@ -79,6 +109,63 @@
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "updateSeller",
+      "accounts": [
+        {
+          "name": "sellerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "nameShop",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "removeSeller",
+      "accounts": [
+        {
+          "name": "sellerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
     },
     {
       "name": "createProduct",
@@ -130,16 +217,104 @@
           "type": "string"
         },
         {
-          "name": "size",
-          "type": "string"
-        },
-        {
           "name": "quanlity",
           "type": "string"
         },
         {
           "name": "votes",
+          "type": {
+            "option": "string"
+          }
+        }
+      ]
+    },
+    {
+      "name": "updateProduct",
+      "accounts": [
+        {
+          "name": "productAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "sellerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "type": "u8"
+        },
+        {
+          "name": "title",
           "type": "string"
+        },
+        {
+          "name": "about",
+          "type": "string"
+        },
+        {
+          "name": "price",
+          "type": "string"
+        },
+        {
+          "name": "color",
+          "type": "string"
+        },
+        {
+          "name": "images",
+          "type": "string"
+        },
+        {
+          "name": "category",
+          "type": "string"
+        },
+        {
+          "name": "quanlity",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "removeProduct",
+      "accounts": [
+        {
+          "name": "productAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "sellerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "type": "u8"
         }
       ]
     }
@@ -150,6 +325,10 @@
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "userIdx",
+            "type": "u8"
+          },
           {
             "name": "name",
             "type": "string"
@@ -175,6 +354,10 @@
         "kind": "struct",
         "fields": [
           {
+            "name": "sellerIdx",
+            "type": "u8"
+          },
+          {
             "name": "name",
             "type": "string"
           },
@@ -191,6 +374,10 @@
             "type": "publicKey"
           },
           {
+            "name": "role",
+            "type": "string"
+          },
+          {
             "name": "nameShop",
             "type": "string"
           },
@@ -201,10 +388,6 @@
           {
             "name": "productCount",
             "type": "u8"
-          },
-          {
-            "name": "role",
-            "type": "string"
           }
         ]
       }
@@ -251,22 +434,20 @@
             "type": "string"
           },
           {
-            "name": "size",
-            "type": "string"
-          },
-          {
             "name": "quanlity",
             "type": "string"
           },
           {
             "name": "votes",
-            "type": "string"
+            "type": {
+              "option": "string"
+            }
           }
         ]
       }
     }
   ],
   "metadata":{
-    "address":"9p7wYZoehkiuqbDumiN9tYZANnWhB1CNMLq31B9zfft2"
+    "address":"9YnSd3juLYFgpfux1xrGyVroA3ryMeVZtRWmLHzmvEZC"
   }
 }

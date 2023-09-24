@@ -1,2 +1,2 @@
 wallet = EMXZVBwKK8cxoDiBzSMmymviXGHZ4EZAHgiXDNcjV4rC
-program_id = 5ZCycaD618nFb1WXj9t7pDG6yVPm8PtLXZsncjtBgYNF
+program_id = 9YnSd3juLYFgpfux1xrGyVroA3ryMeVZtRWmLHzmvEZC

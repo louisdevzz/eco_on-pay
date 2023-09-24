@@ -30,11 +30,9 @@ export default function Test() {
   const [about, setAbout] = useState('')
   const [quanlity, setQuanlity] = useState('')
   const [color, setColor] = useState('')
-  const [image, setImage] = useState('')
+  const [images, setImage] = useState('')
   const [category, setCategory] = useState('')
-  const [size, setSize] = useState('')
   const [votes, setVotes] = useState('')
-
 
   //console.log(titile)
 
@@ -43,8 +41,6 @@ export default function Test() {
     publicKey, 
     amount,
     setAmount,
-    transactionPurpose,
-    setTransactionPurpose,
     receiver,
     setReceiver,
     doTransaction,
@@ -68,11 +64,10 @@ export default function Test() {
   }
 
   const onPay = async()=>{
-    doTransaction({amount,receiver,transactionPurpose})
+    doTransaction({amount,receiver})
     //clear states
     setAmount(0)
     setReceiver("")
-    setTransactionPurpose("")
   }
 
   //console.log("Data Product: ",product)
@@ -89,7 +84,6 @@ export default function Test() {
       <div className="flex flex-col mt-5">
         <input className="mb-3 border border-gray-300 px-3 py-2 w-[200px] rounded-lg focus:outline-none" onChange={onAmount} value={amount} id="amount" type="text" placeholder="Enter SOL"/>
         <input className="mb-3 border border-gray-300 px-3 py-2 w-[400px] rounded-lg focus:outline-none" value={receiver} onChange={(e) => setReceiver(e.target.value)} id="formwallet" type="text" placeholder="Enter from wallet"/>
-        <input className="mb-3 border border-gray-300 px-3 py-2 w-[400px] rounded-lg focus:outline-none"value={transactionPurpose} onChange={(e) => setTransactionPurpose(e.target.value)}  id="comment" type="text" placeholder="Enter comment"/>
         <button className="h-[50px] w-[200px] bg-[#1abc9c] rounded-lg text-white font-bold text-xl" onClick={onPay}>Pay</button>
       </div>
       <div>
@@ -124,13 +118,9 @@ export default function Test() {
         <input style={style.input} type="text" onChange={(e)=>setColor(e.target.value)} placeholder="enter color product"/>
         <input style={style.input} type="text" onChange={(e)=>setImage(e.target.value)} placeholder="enter image link product"/>
         <input style={style.input} type="text" onChange={(e)=>setCategory(e.target.value)} placeholder="enter category product"/>
-        <input style={style.input} type="text" onChange={(e)=>setSize(e.target.value)} placeholder="enter size product"/>
         <input style={style.input} type="text" onChange={(e)=>setVotes(e.target.value)} placeholder="enter votes product"/>
 
-        <input type="submit" value="Create product" onClick={()=>{createProduct(title,about,price,color,image,category,size,quanlity,votes)}} className="mt-5 w-[200px] h-[50px] rounded-lg text-md cursor-pointer font-bold bg-[#1abc9c] text-white"/>
-      </div>
-      <div className="mt-5">
-        <img style={{width:"500px",height: "500px"}} src="https://moccasin-handsome-jackal-895.mypinata.cloud/ipfs/QmP8UPD5HBeYqmNF5xhZyeCRqLso5BHLduDALG3CCsxqYG" alt=""/>
+        <input type="submit" value="Create product" onClick={()=>{createProduct(title,about,price,color,images,category,quanlity,votes)}} className="mt-5 w-[200px] h-[50px] rounded-lg text-md cursor-pointer font-bold bg-[#1abc9c] text-white"/>
       </div>
     </div>
     </>
