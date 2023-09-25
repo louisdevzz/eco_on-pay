@@ -21,7 +21,14 @@ margin: 0;
 padding: 0;
 }
 
-.phantom-button{
+.phantom-button {
+  height: inherit !important;
+  padding: inherit !important;
   background-color:#0097e6 !important;
-  color: red !important;
+  color: white !important;
+}
+
+
+.phantom-button:hover{
+  background-color:#86cbf0 !important;
 }
