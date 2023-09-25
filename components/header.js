@@ -1,7 +1,10 @@
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
 import { useCashApp } from "../hooks/cashapp"
 import Link from "next/link"
+import dynamic from "next/dynamic"
+import "@fontsource/poppins/400.css"; 
+
 require('@solana/wallet-adapter-react-ui/styles.css')
+const Wallets = dynamic(() => import("../context/wallet"), { ssr: false });
 
 export default function Header(){
   const {connected,publicKey} = useCashApp()
@@ -10,7 +13,7 @@ export default function Header(){
   <div class="border py-3 px-6">
     <div class="flex justify-between">
       <div class="flex items-center">
-        <img style={{width: "60px", height: "60px"}} src={"/img/logo1.png"} alt="logo"/>
+        <Link href={'/'}><img style={{width: "60px", height: "60px"}} src={"/img/logo1.png"} alt="logo"/></Link>
         <Link href={'/'} class="ml-2 font-semibold text-[#252C32]">Eco On-Pay</Link>
       </div>
 
@@ -51,10 +54,7 @@ export default function Header(){
           <span class="text-sm font-medium">Cart</span>
         </div>
 
-        {/* <WalletMultiButton>
-          <span className="text-sm px-1 py-2">{connected?truncate(publicKey.toString()):"Select Wallet"}</span>
-        </WalletMultiButton> */}
-        <WalletMultiButton/>
+        <Wallets/>
       </div>
     </div>
 
