@@ -1,4 +1,3 @@
-import { useCashApp } from "../hooks/cashapp"
 import Link from "next/link"
 import dynamic from "next/dynamic"
 import "@fontsource/poppins/400.css"; 
@@ -7,7 +6,6 @@ require('@solana/wallet-adapter-react-ui/styles.css')
 const Wallets = dynamic(() => import("../context/wallet"), { ssr: false });
 
 export default function Header(){
-  const {connected,publicKey} = useCashApp()
   return(
     <div class="bg-white">
   <div class="border py-3 px-6">
