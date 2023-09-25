@@ -1,20 +1,25 @@
 import Link from "next/link"
 import dynamic from "next/dynamic"
 import "@fontsource/poppins/400.css"; 
+import { Roboto } from 'next/font/google'
+ 
+const roboto = Roboto({
+  weight: '500',
+  subsets: ['latin'],
+})
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 const Wallets = dynamic(() => import("../context/wallet"), { ssr: false });
 
 export default function Header(){
   return(
-    <div class="bg-white">
+    <div class={roboto.className} style={{backgroundColor: "white"}}>
   <div class="border py-3 px-6">
     <div class="flex justify-between">
       <div class="flex items-center">
         <Link href={'/'}><img style={{width: "60px", height: "60px"}} src={"/img/logo1.png"} alt="logo"/></Link>
-        <Link href={'/'} class="ml-2 font-semibold text-[#252C32]">Eco On-Pay</Link>
+        <Link href={'/'} class="ml-2 text-2xl font-bold text-[#252C32]">Eco On-Pay</Link>
       </div>
-
       <div class="ml-6 flex flex-1 gap-x-3">
         <div class="flex cursor-pointer select-none items-center gap-x-2 rounded-md border bg-[#4094F7] py-2 px-4 text-white hover:bg-blue-500">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -22,10 +27,8 @@ export default function Header(){
           </svg>
           <span class="text-sm font-medium">Categories</span>
         </div>
-
         <input type="text" class="w-full rounded-md border border-[#DDE2E4] px-3 py-2 text-sm" placeholder="Search" />
       </div>
-
       <div class="ml-2 flex">
         <div class="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
@@ -34,14 +37,12 @@ export default function Header(){
           </svg>
           <Link href={'/order'} class="text-sm font-medium">Orders</Link>
         </div>
-
         <div class="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
           </svg>
           <span class="text-sm font-medium">Favorites</span>
         </div>
-
         <div class="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100">
           <div class="relative">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
@@ -51,11 +52,9 @@ export default function Header(){
           </div>
           <Link href={'/cart'} class="text-sm font-medium">Cart</Link>
         </div>
-
         <Wallets/>
       </div>
     </div>
-
     <div class="mt-4 flex items-center justify-between">
       <div class="flex gap-x-8">
         <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">New Releases</span>
@@ -66,7 +65,6 @@ export default function Header(){
         <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Pharmacy</span>
         <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Toys & Games</span>
       </div>
-
       <Link href={'/seller_onboarding'} class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Becoma a seller</Link>
     </div>
   </div>

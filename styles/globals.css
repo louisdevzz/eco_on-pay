@@ -25,3 +25,13 @@ font-weight: 500;
 .phantom-button:hover{
   background-color: #74b9ff;
 }
+.embla {
+  overflow: hidden;
+}
+.embla__container {
+  display: flex;
+}
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
