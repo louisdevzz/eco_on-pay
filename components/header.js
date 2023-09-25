@@ -49,7 +49,7 @@ export default function Header(){
             </svg>
             <span class="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">3</span>
           </div>
-          <span class="text-sm font-medium">Cart</span>
+          <Link href={'/cart'} class="text-sm font-medium">Cart</Link>
         </div>
 
         <Wallets/>
