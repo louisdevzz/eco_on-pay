@@ -51,15 +51,12 @@ export default function Header(){
           <span class="text-sm font-medium">Cart</span>
         </div>
 
-          <WalletMultiButton className="phantom-button" 
-          style={{
-            height: "inherit !important", 
-            padding: "inherit !important",
-            backgroundColor:"#0097e6 !important",
-            color: "white !important"
-            }}>
-            <span className="text-sm px-1 py-2">{connected?truncate(publicKey.toString()):"Select Wallet"}</span>
-          </WalletMultiButton>
+          {/* <div className="phantom-button">
+            <WalletMultiButton className="phantom-button">
+              <span className="text-sm px-1 py-2">{connected?truncate(publicKey.toString()):"Select Wallet"}</span>
+            </WalletMultiButton>
+          </div> */}
+          <WalletMultiButton/>
       </div>
     </div>
 

@@ -26,6 +26,8 @@ padding: 0;
   padding: inherit !important;
   background-color:#0097e6 !important;
   color: white !important;
+  height: 100%;
+  width: 100%;
 }
 
 
