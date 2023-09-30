@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "babel src -d lib",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest"
-
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.1",
@@ -51,6 +50,7 @@
     "os": false
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.5.6"
+    "@tailwindcss/forms": "^0.5.6",
+    "babel-cli": "^6.26.0"
   }
 }
