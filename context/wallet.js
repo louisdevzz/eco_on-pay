@@ -17,7 +17,7 @@ const Wallets = () => {
               w="50"
               size="lg"
               fontSize="md"
-              bg="#00a8ff"
+              bg="rgb(13 148 136 /1)"
               color="white"
               _hover="#74b9ff"
               leftIcon={
@@ -26,6 +26,7 @@ const Wallets = () => {
                   alt={wallet.adapter.name}
                   h={6}
                   w={6}
+                  bg="rgb(13 148 136 /1)"
                 />
               }
             >
@@ -38,9 +39,11 @@ const Wallets = () => {
     </VStack>
   ) : (
     <VStack gap={4}>
-      <button onClick={disconnect} style={{backgroundColor: "#00a8ff"}} className="phantom-button text-sm mt-1 px-3 py-2 font-bold hover:bg-[#74b9ff] rounded-lg w-[200px] h-[50px] text-white">{truncate(publicKey.toBase58())}</button>
+      <button onClick={disconnect} style={{backgroundColor: "rgb(13 148 136 /1)"}} className="phantom-button text-sm mt-1 px-3 py-2 font-bold hover:bg-[#74b9ff] rounded-lg w-[200px] h-[50px] text-white">{truncate(publicKey.toBase58())}</button>
       {/* <Button onClick={disconnect}>disconnect wallet</Button> */}
     </VStack>
+    // --tw-text-opacity: 1;
+    // color: rgb(13 148 136 / var(--tw-text-opacity));
   );
 };
 

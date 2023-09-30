@@ -2,7 +2,10 @@ import Link from "next/link"
 import dynamic from "next/dynamic"
 import "@fontsource/poppins/400.css"; 
 import { Roboto } from 'next/font/google'
- 
+import CartModal from "./cart";
+import { useState } from "react";
+import { useCart } from "react-use-cart";
+
 const roboto = Roboto({
   weight: '500',
   subsets: ['latin'],
@@ -12,6 +15,12 @@ require('@solana/wallet-adapter-react-ui/styles.css')
 const Wallets = dynamic(() => import("../context/wallet"), { ssr: false });
 
 export default function Header(){
+  const [open, setOpen] = useState(false)
+  const {
+    isEmpty,
+    totalItems,
+} = useCart();
+console.log(totalItems)
   return(
     <div class={roboto.className} style={{backgroundColor: "white"}}>
   <div class="border py-3 px-6">
@@ -27,7 +36,7 @@ export default function Header(){
           </svg>
           <span class="text-sm font-medium">Categories</span>
         </div>
-        <input type="text" class="w-full rounded-md border border-[#DDE2E4] px-3 py-2 text-sm" placeholder="Search" />
+        <input type="text" class="w-full h-[50px] rounded-md focus:outline-none focus:border-teal-600 border border-[#DDE2E4] px-3 py-2 text-sm" placeholder="Search" />
       </div>
       <div class="ml-2 flex">
         <div class="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100">
@@ -43,15 +52,21 @@ export default function Header(){
           </svg>
           <span class="text-sm font-medium">Favorites</span>
         </div>
-        <div class="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100">
+        <button onClick={e=>{
+          setOpen(true)
+        }} class="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-5 mr-2 hover:bg-gray-100">
           <div class="relative">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
               <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
             </svg>
-            <span class="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">3</span>
+            {!isEmpty&&
+            <span class="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">{totalItems.toString()}</span>}
+            
           </div>
-          <Link href={'/cart'} class="text-sm font-medium">Cart</Link>
-        </div>
+          {/* <Sa href={'/cart'} class="text-sm font-medium">Cart</Sa> */}
+          <span class="text-sm font-medium">Cart</span>
+          <CartModal open={open} setOpen={setOpen}/>
+        </button>
         <Wallets/>
       </div>
     </div>

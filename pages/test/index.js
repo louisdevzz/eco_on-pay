@@ -73,7 +73,7 @@ export default function Test() {
   //console.log("Data Product: ",product)
 
  
-
+  console.log(transaction)
   return (
     <>
     <div className="mt-5 ml-5 flex flex-col">

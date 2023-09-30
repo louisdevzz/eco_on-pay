@@ -6,7 +6,6 @@ import { useMemo } from "react";
 const WalletConnectionProvider = ({children}) => {
     const endpoint = useMemo(()=>"https://api.devnet.solana.com",[])
     const wallets = useMemo(()=>[new PhantomWalletAdapter],[])
-
     return(
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>

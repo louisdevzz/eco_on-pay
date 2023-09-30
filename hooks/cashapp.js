@@ -95,14 +95,39 @@ export const useCashApp = () =>{
         }
         start()
         if(connected){
-          setUseAddress(publicKey.toString())
-          
+            setUseAddress(publicKey.toString())
         }
     },[program,publicKey, transactionPending])
     //program,publicKey, transactionPending
 
 
     const initUser = async(name, avatar)=>{
+        console.log("INITING USER")
+        if(program && publicKey){
+            try{
+                setTransactionPending(true)
+                const [userPda] = await findProgramAddressSync([utf8.encode("user"), publicKey.toBuffer()],program.programId)
+
+                await program.methods
+                .initUser(name,avatar)
+                .accounts({
+                    userAccount: userPda,
+                    authority: publicKey,
+                    systemProgram: SystemProgram.programId,
+                })
+                .rpc()
+                setInitialized(true)
+            }
+            catch(err){
+                console.log(err)
+            }
+            finally{
+                setTransactionPending(false)
+            }
+        }
+    }
+
+    const updateProductIdUser = async(id)=>{
         console.log("INITING USER")
         if(program && publicKey){
             try{
@@ -265,7 +290,7 @@ export const useCashApp = () =>{
             transactionDate: new Date(),
             status: 'Completed',
             amount: amount,
-            source: '-',
+            products: product,
             identifer: '-'
 
         };

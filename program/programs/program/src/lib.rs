@@ -34,6 +34,15 @@ pub mod product {
         Ok(())
     }
 
+    pub fn update_product_id_user(
+        ctx: Context<UpdateProductIdUser>,
+        product_id: Vec<u8>,
+    ) -> Result<()> {
+        let user_account = &mut ctx.accounts.user_account;
+        user_account.product_id = product_id;
+        Ok(())
+    }
+
     pub fn init_seller(ctx: Context<InitSeller>, name_shop: String) -> Result<()> {
         let user_account = &mut ctx.accounts.user_account;
         let seller_account = &mut ctx.accounts.seller_account;
@@ -174,6 +183,23 @@ pub struct InitSeller<'info> {
 #[derive(Accounts)]
 #[instruction()]
 pub struct UpdateUser<'info> {
+    #[account(
+        mut,
+        seeds = [USER_SEED, authority.key().as_ref()],
+        bump,
+        has_one = authority,
+    )]
+    pub user_account: Box<Account<'info, UserAccount>>,
+
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction()]
+pub struct UpdateProductIdUser<'info> {
     #[account(
         mut,
         seeds = [USER_SEED, authority.key().as_ref()],

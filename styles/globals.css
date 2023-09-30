@@ -35,3 +35,29 @@ font-weight: 500;
   flex: 0 0 100%;
   min-width: 0;
 }
+
+.item-step{
+  @apply relative flex flex-col justify-center items-center w-36
+}
+
+.item-step:not(:first-child):before{
+  @apply content-[''] bg-slate-300 absolute w-[200px] h-[3px] right-2/4 top-1/3 -translate-y-3/4;
+}
+
+.step{
+  @apply w-10 h-10 flex items-center justify-center z-10 relative bg-slate-500 rounded-full font-semibold text-white ;
+}
+
+.active .step{
+  @apply bg-teal-500
+}
+.complete .step{
+  @apply bg-teal-500
+}
+
+.complete:not(:first-child):before{
+  @apply bg-teal-500
+}
+.complete p{
+  @apply text-teal-500
+}

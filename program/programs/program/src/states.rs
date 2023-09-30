@@ -8,6 +8,7 @@ pub struct UserAccount {
     pub avatar: String, // 4 + 2048
     pub authority: Pubkey,
     pub role: String, // 32
+    pub product_id: Vec<u8>,
 }
 
 #[account]
