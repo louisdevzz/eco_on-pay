@@ -12,7 +12,7 @@ export default function Cart({products}){
                     {products.length === 0 &&<span>empty cart</span>}
                     {products.map((data)=>(
                         <div className="mt-5" key={data.id}>
-                            <img alt="ecommerce" class="w-[200px] h-[200px] object-cover object-center rounded border border-gray-200" src={`${data.images}`}/>
+                            <img alt="ecommerce" className="w-[200px] h-[200px] object-cover object-center rounded border border-gray-200" src={`${data.images}`}/>
                             <div>
                                 <h1>{data.title}</h1>
                                 <span>{data.price * count}$</span>

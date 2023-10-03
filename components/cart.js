@@ -6,7 +6,7 @@ import { useCart } from "react-use-cart";
 export default function CartModal({open,setOpen}) {
   const {
       isEmpty,
-      totalItems,
+      cartTotal,
       items,
       updateItemQuantity,
       emptyCart,
@@ -89,7 +89,7 @@ export default function CartModal({open,setOpen}) {
                                             onClick={() => updateItemQuantity(product.id, product.quantity - 1)}
                                             className=''
                                           >
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="h-4 w-4 dark:text-neutral-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" className="h-4 w-4 dark:text-neutral-500">
                                               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15"></path>
                                             </svg>
                                           </button>
@@ -97,7 +97,7 @@ export default function CartModal({open,setOpen}) {
                                           <button
                                             onClick={() => updateItemQuantity(product.id, product.quantity + 1)}
                                           >
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="h-4 w-4 dark:text-neutral-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" className="h-4 w-4 dark:text-neutral-500">
                                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
                                             </svg>
                                           </button>
@@ -125,12 +125,12 @@ export default function CartModal({open,setOpen}) {
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p>Subtotal</p>
-                        <p>$262.00</p>
+                        <p>${cartTotal}</p>
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                       <div className="mt-6">
                         <a
-                          href="#"
+                          href="/checkout"
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Checkout
