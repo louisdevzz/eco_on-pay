@@ -1,4 +1,5 @@
 import Header from "@/components/header"
+import ModalPay from "@/components/modal_pay"
 
 const style = {
     border:"border border-gray-200",
@@ -9,7 +10,7 @@ export default function CheckOut(){
     return(
         <>
         <Header/>
-        <div className="container max-w-screen-lg mx-auto py-5">
+        <div className="container max-w-screen-lg min-h-screen mx-auto py-5 pb-20 scroll-smooth">
             <div className="">
               <h1 className="text-4xl font-semibold">Checkout</h1>  
             </div>
@@ -111,6 +112,25 @@ export default function CheckOut(){
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+                <div className="mt-10 bg-[#ebe9eb] h-full w-full px-3 py-5">
+                    <div className="flex flex-row">
+                        <h1 className="text-lg mr-2 font-semibold text-[#333333]">Pay with Solana Pay</h1>
+                        <img src="https://solana-pay-demo.juxdan.io/wp-content/plugins/wc-solana-pay/assets/img/solana_pay_black_gradient.svg" alt="Pay with Solana Pay"></img>
+                    </div>
+                    <div className="mt-5">
+                        <span>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="#" className="text-blue-500 underline">privacy policy</a>.</span>
+                        <div className="mt-5">
+                            <input type="checkbox" className="mr-2"/>
+                            <label>I have read and agree to the website <a href="#" className="text-blue-500 underline">terms and conditions.</a><span className="text-red-500">*</span></label>
+                        </div>
+                        <div className="mt-5">
+                            {/* <button className="bg-[#333333] px-2 py-3 w-[100px] justify-center flex items-center h-[40px]">
+                                <img width={50} height={50} src="https://solana-pay-demo.juxdan.io/wp-content/plugins/wc-solana-pay/assets/img/solana_pay_white_gradient.svg" alt="Solana Pay"/>
+                            </button> */}
+                            <ModalPay/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div> 
