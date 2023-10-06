@@ -53,13 +53,13 @@ export default function ModalPay({checked}) {
 
                         <div className="">
                             <div className="relative grid grid-cols-2 mt-2 px-3 py-1 border border-gray-300 rounded-lg shadow-sm">
-                                <p className="text-center text-3xl items-center font-bold">2000</p>
+                                <p className="text-center text-3xl items-center font-bold">{cartTotal*0.0429}</p>
                                 <select className="focus:outline-none text-center items-center font-bold text-2xl">
                                     <option value="SOL" selected>
                                         SOL
                                     </option>
-                                    <option value="USDC" selected>USDC</option>
-                                    <option value="USDT" selected>USDT</option>
+                                    <option value="USDC">USDC</option>
+                                    <option value="USDT">USDT</option>
                                 </select>
                             </div>
                             <div className="flex justify-center flex-col items-center mt-5">

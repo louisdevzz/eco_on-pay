@@ -136,19 +136,6 @@ export default function CartModal({open,setOpen}) {
                           Checkout
                         </a>
                       </div>
-                      {/* <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                        <p>
-                          or
-                          <button
-                            type="button"
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
-                            onClick={() => setOpen(false)}
-                          >
-                            Continue Shopping
-                            <span aria-hidden="true"> &rarr;</span>
-                          </button>
-                        </p>
-                      </div> */}
                     </div>
                   </div>
                 </Dialog.Panel>
