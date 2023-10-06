@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import Header from "@/components/header"
 
 export default function Cart({products}){
     const [count, setCount] = useState(1)

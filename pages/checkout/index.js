@@ -1,5 +1,9 @@
+import Footer from "@/components/footer"
 import Header from "@/components/header"
 import ModalPay from "@/components/modal_pay"
+import { useState } from "react"
+import { useCart } from "react-use-cart";
+
 
 const style = {
     border:"border border-gray-200",
@@ -7,6 +11,8 @@ const style = {
 }
 
 export default function CheckOut(){
+    const [checked, setChecked] = useState(false)
+    const {items,cartTotal} = useCart()
     return(
         <>
         <Header/>
@@ -68,22 +74,24 @@ export default function CheckOut(){
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className="text-center">
-                                <td className={style.border}> Solana Logo Sticker&nbsp; <strong className="product-quantity">x1</strong></td>
-                                <td className={style.border}>
-                                    <span className="woocommerce-Price-amount amount">
-                                    <bdi>2,59&nbsp; <span className="woocommerce-Price-currencySymbol">€</span>
-                                    </bdi>
-                                    </span>
-                                </td>
-                            </tr>
+                            {items.map((item)=>(
+                                <tr className="text-center">
+                                    <td className={style.border}> {item.title}&nbsp; <strong className="product-quantity">x1</strong></td>
+                                    <td className={style.border}>
+                                        <span className="">
+                                        <bdi>{item.price}&nbsp; <span className="">$</span>
+                                        </bdi>
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                         <tfoot>
                             <tr className="text-center">
                                 <th className={style.border}>Subtotal</th>
                                 <td className={style.border}>
-                                    <span className="woocommerce-Price-amount amount">
-                                    <bdi>2,59&nbsp; <span className="woocommerce-Price-currencySymbol">€</span>
+                                    <span className="">
+                                    <bdi>{cartTotal}&nbsp; <span className="">$</span>
                                     </bdi>
                                     </span>
                                 </td>
@@ -91,7 +99,7 @@ export default function CheckOut(){
                             <tr className="text-center">
                                 <th className={style.border}>Shipping</th>
                                 <td data-title="Shipping" className={style.border}>
-                                    <ul id="shipping_method" className="woocommerce-shipping-methods">
+                                    <ul id="shipping_method">
                                     <li>
                                         <input type="hidden" name="shipping_method[0]" data-index="0" id="shipping_method_0_free_shipping1" value="free_shipping:1" className="shipping_method"/>
                                         <label for="shipping_method_0_free_shipping1">Free shipping</label>
@@ -103,8 +111,8 @@ export default function CheckOut(){
                                 <th className={style.border}>Total</th>
                                 <td className={style.border}>
                                     <strong>
-                                    <span className="woocommerce-Price-amount amount">
-                                        <bdi>2,59&nbsp; <span className="woocommerce-Price-currencySymbol">€</span>
+                                    <span className="">
+                                        <bdi>{cartTotal}&nbsp; <span className="">$</span>
                                         </bdi>
                                     </span>
                                     </strong>
@@ -121,19 +129,17 @@ export default function CheckOut(){
                     <div className="mt-5">
                         <span>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="#" className="text-blue-500 underline">privacy policy</a>.</span>
                         <div className="mt-5">
-                            <input type="checkbox" className="mr-2"/>
+                            <input type="checkbox" className="mr-2" onChange={(e)=>setChecked(e.target.checked)}/>
                             <label>I have read and agree to the website <a href="#" className="text-blue-500 underline">terms and conditions.</a><span className="text-red-500">*</span></label>
                         </div>
                         <div className="mt-5">
-                            {/* <button className="bg-[#333333] px-2 py-3 w-[100px] justify-center flex items-center h-[40px]">
-                                <img width={50} height={50} src="https://solana-pay-demo.juxdan.io/wp-content/plugins/wc-solana-pay/assets/img/solana_pay_white_gradient.svg" alt="Solana Pay"/>
-                            </button> */}
-                            <ModalPay/>
+                            <ModalPay checked={checked}/>
                         </div>
                     </div>
                 </div>
             </div>
         </div> 
+        <Footer/>
         </>
     )
 }

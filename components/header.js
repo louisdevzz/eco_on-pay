@@ -5,6 +5,8 @@ import { Roboto } from 'next/font/google'
 import CartModal from "./cart";
 import { useState } from "react";
 import { useCart } from "react-use-cart";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+
 
 const roboto = Roboto({
   weight: '500',
@@ -12,7 +14,7 @@ const roboto = Roboto({
 })
 
 require('@solana/wallet-adapter-react-ui/styles.css')
-const Wallets = dynamic(() => import("../context/wallet"), { ssr: false });
+// const Wallets = dynamic(() => import("../context/wallet"), { ssr: false });
 
 export default function Header(){
   const [open, setOpen] = useState(false)
@@ -30,12 +32,6 @@ console.log(totalItems)
         <Link href={'/'} className="ml-2 text-2xl font-bold text-[#252C32]">Eco On-Pay</Link>
       </div>
       <div className="ml-6 flex flex-1 gap-x-3">
-        <div className="flex cursor-pointer select-none items-center gap-x-2 rounded-md border bg-[#4094F7] py-2 px-4 text-white hover:bg-blue-500">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <span className="text-sm font-medium">Categories</span>
-        </div>
         <input type="text" className="w-full h-[50px] rounded-md focus:outline-none focus:border-teal-600 border border-[#DDE2E4] px-3 py-2 text-sm" placeholder="Search" />
       </div>
       <div className="ml-2 flex">
@@ -46,12 +42,12 @@ console.log(totalItems)
           </svg>
           <Link href={'/order'} className="text-sm font-medium">Orders</Link>
         </div>
-        <div className="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100">
+        {/* <div className="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
           </svg>
           <span className="text-sm font-medium">Favorites</span>
-        </div>
+        </div> */}
         <button onClick={e=>{
           setOpen(true)
         }} className="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-5 mr-2 hover:bg-gray-100">
@@ -67,10 +63,13 @@ console.log(totalItems)
           <span className="text-sm font-medium">Cart</span>
           <CartModal open={open} setOpen={setOpen}/>
         </button>
-        <Wallets/>
+        {/* <Wallets/> */}
+        <div className="basis-1/4">
+        <WalletMultiButton className='!bg-gray-900 hover:scale-105'/>
+        </div>
       </div>
     </div>
-    <div className="mt-4 flex items-center justify-between">
+    {/* <div className="mt-4 flex items-center justify-between">
       <div className="flex gap-x-8">
         <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">New Releases</span>
         <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Books</span>
@@ -81,7 +80,7 @@ console.log(totalItems)
         <span className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Toys & Games</span>
       </div>
       <Link href={'/seller_onboarding'} className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-gray-100">Becoma a seller</Link>
-    </div>
+    </div> */}
   </div>
 </div>
   )

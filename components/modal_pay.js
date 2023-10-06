@@ -1,13 +1,19 @@
 import React from "react";
 import "@fontsource/poppins/400.css"; 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useCart } from "react-use-cart";
+import dynamic from "next/dynamic";
 
-export default function ModalPay() {
+const WalletPay = dynamic(() => import("../context/wallet_pay"), { ssr: false });
+
+export default function ModalPay({checked}) {
   const [showModal, setShowModal] = React.useState(false);
+  const {items,cartTotal} = useCart()
   return (
     <>
       <button 
         onClick={() => setShowModal(true)}
+        disabled={!checked}
         className="bg-[#333333] px-2 py-3 w-[100px] justify-center flex items-center h-[40px]">
             <img width={50} height={50} src="https://solana-pay-demo.juxdan.io/wp-content/plugins/wc-solana-pay/assets/img/solana_pay_white_gradient.svg" alt="Solana Pay"/>
         </button>
@@ -34,7 +40,7 @@ export default function ModalPay() {
                 {/*body*/}
                 <div className="relative px-3 flex-auto">
                     <div className=" bg-gray-50 px-4 pt-2">
-                        <p className="text-xl font-medium text-end">20$</p>
+                        <p className="text-xl font-medium text-end">{cartTotal}$</p>
                         <div className="">
                             <div className="relative grid grid-cols-2 mt-2 px-3 py-1 border border-gray-300 rounded-lg shadow-sm">
                                 <p className="text-center text-3xl items-center font-bold">2000</p>
@@ -48,7 +54,8 @@ export default function ModalPay() {
                             </div>
                             <div className="flex justify-center flex-col items-center mt-5">
                                 <span className="text-center items-center mb-3">Pay with Browser Wallet</span>
-                                <WalletMultiButton/>
+                                {/* <WalletMultiButton/> */}
+                                <WalletPay/>
                             </div>
                             <div className="mt-6 border-t-2 border-b py-2">
                                 <div className="flex items-center justify-between flex-col">
