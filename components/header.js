@@ -64,8 +64,8 @@ console.log(totalItems)
           <CartModal open={open} setOpen={setOpen}/>
         </button>
         {/* <Wallets/> */}
-        <div className="basis-1/4">
-        <WalletMultiButton className='!bg-gray-900 hover:scale-105'/>
+        <div className="">
+          <WalletMultiButton className='!bg-gray-900 hover:scale-105 autofill:!bg-gray-900 phantom-button'/>
         </div>
       </div>
     </div>

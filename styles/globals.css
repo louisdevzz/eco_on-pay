@@ -22,9 +22,12 @@ padding: 0;
 font-weight: 500;
 }
 
-.phantom-button:hover{
-  background-color: #74b9ff;
+.wallet-adapter-button, .wallet-adapter-button-trigger{
+  /* all:unset !important; */
+  --tw-bg-opacity: 1;
+  background-color: rgb(17 24 39 / var(--tw-bg-opacity)) !important;
 }
+
 .embla {
   overflow: hidden;
 }
