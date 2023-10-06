@@ -1,8 +1,13 @@
 import { VStack, Button, Image } from "@chakra-ui/react";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useCashApp } from "@/hooks/cashapp";
 
-const WalletPay = () => {
+const WalletPay = ({amount,receiver}) => {
   const { select, wallets, publicKey, disconnect } = useWallet();
+  const {doTransaction} = useCashApp()
+  const onPay = async()=>{
+    doTransaction({amount,receiver})
+  }
 
   return !publicKey ? (
     <VStack gap={4}>
@@ -40,22 +45,24 @@ const WalletPay = () => {
   ) : (
     <VStack gap={4}>
         <div className="flex flex-col">
-            <div className="">
-                <div>
-                    <img slot="start-icon" width={30} height={30} className="absolute m-4" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTA4IiBoZWlnaHQ9IjEwOCIgdmlld0JveD0iMCAwIDEwOCAxMDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDgiIGhlaWdodD0iMTA4IiByeD0iMjYiIGZpbGw9IiNBQjlGRjIiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00Ni41MjY3IDY5LjkyMjlDNDIuMDA1NCA3Ni44NTA5IDM0LjQyOTIgODUuNjE4MiAyNC4zNDggODUuNjE4MkMxOS41ODI0IDg1LjYxODIgMTUgODMuNjU2MyAxNSA3NS4xMzQyQzE1IDUzLjQzMDUgNDQuNjMyNiAxOS44MzI3IDcyLjEyNjggMTkuODMyN0M4Ny43NjggMTkuODMyNyA5NCAzMC42ODQ2IDk0IDQzLjAwNzlDOTQgNTguODI1OCA4My43MzU1IDc2LjkxMjIgNzMuNTMyMSA3Ni45MTIyQzcwLjI5MzkgNzYuOTEyMiA2OC43MDUzIDc1LjEzNDIgNjguNzA1MyA3Mi4zMTRDNjguNzA1MyA3MS41NzgzIDY4LjgyNzUgNzAuNzgxMiA2OS4wNzE5IDY5LjkyMjlDNjUuNTg5MyA3NS44Njk5IDU4Ljg2ODUgODEuMzg3OCA1Mi41NzU0IDgxLjM4NzhDNDcuOTkzIDgxLjM4NzggNDUuNjcxMyA3OC41MDYzIDQ1LjY3MTMgNzQuNDU5OEM0NS42NzEzIDcyLjk4ODQgNDUuOTc2OCA3MS40NTU2IDQ2LjUyNjcgNjkuOTIyOVpNODMuNjc2MSA0Mi41Nzk0QzgzLjY3NjEgNDYuMTcwNCA4MS41NTc1IDQ3Ljk2NTggNzkuMTg3NSA0Ny45NjU4Qzc2Ljc4MTYgNDcuOTY1OCA3NC42OTg5IDQ2LjE3MDQgNzQuNjk4OSA0Mi41Nzk0Qzc0LjY5ODkgMzguOTg4NSA3Ni43ODE2IDM3LjE5MzEgNzkuMTg3NSAzNy4xOTMxQzgxLjU1NzUgMzcuMTkzMSA4My42NzYxIDM4Ljk4ODUgODMuNjc2MSA0Mi41Nzk0Wk03MC4yMTAzIDQyLjU3OTVDNzAuMjEwMyA0Ni4xNzA0IDY4LjA5MTYgNDcuOTY1OCA2NS43MjE2IDQ3Ljk2NThDNjMuMzE1NyA0Ny45NjU4IDYxLjIzMyA0Ni4xNzA0IDYxLjIzMyA0Mi41Nzk1QzYxLjIzMyAzOC45ODg1IDYzLjMxNTcgMzcuMTkzMSA2NS43MjE2IDM3LjE5MzFDNjguMDkxNiAzNy4xOTMxIDcwLjIxMDMgMzguOTg4NSA3MC4yMTAzIDQyLjU3OTVaIiBmaWxsPSIjRkZGREY4Ii8+Cjwvc3ZnPgo=" alt="Phantom icon"></img>
-                    <button style={{backgroundColor: "#512da8",width: "200px"}} className="phantom-button text-xl mt-1 px-3 py-2 font-bold hover:bg-[#74b9ff] rounded-lg w-[200px] h-[50px] text-white">
-                    
-                    Pay Now
+            <div className="text-center">
+                <div className="relative text-center flex items-center justify-between"> 
+                    <button onClick={onPay} style={{backgroundColor: "#512da8",width: "200px",borderRadius:"5px 0 0 5px",marginRight: "2px"}} className="text-xl  px-3 py-2 font-bold  w-[200px] h-[50px] text-white">
+                      Pay Now
+                    </button>
+                    <button style={{backgroundColor: "#512da8",borderRadius:"0 5px 5px 0"}} className="px-1 h-[50px]  py-2 flex justify-between items-center">
+                      <span className="text-white flex items-center">
+                      <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M4.29289 8.29289C4.68342 7.90237 5.31658 7.90237 5.70711 8.29289L12 14.5858L18.2929 8.29289C18.6834 7.90237 19.3166 7.90237 19.7071 8.29289C20.0976 8.68342 20.0976 9.31658 19.7071 9.70711L12.7071 16.7071C12.3166 17.0976 11.6834 17.0976 11.2929 16.7071L4.29289 9.70711C3.90237 9.31658 3.90237 8.68342 4.29289 8.29289Z" fill="#ffffff"></path> </g></svg>
+                      </span>
                     </button>
                 </div>
-                <button></button>
+                
+                <span >Connected: &nbsp;<strong>{truncate(publicKey.toBase58())}</strong></span>
             </div>
         {/* <Button onClick={disconnect}>disconnect wallet</Button> */}
-            <span >Connected: &nbsp;<strong>{truncate(publicKey.toBase58())}</strong></span>
+            
         </div>
     </VStack>
-    // --tw-text-opacity: 1;
-    // color: rgb(13 148 136 / var(--tw-text-opacity));
   );
 };
 

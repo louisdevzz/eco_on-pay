@@ -3,11 +3,13 @@ import "@fontsource/poppins/400.css";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useCart } from "react-use-cart";
 import dynamic from "next/dynamic";
+import { useCashApp } from "@/hooks/cashapp";
 
 const WalletPay = dynamic(() => import("../context/wallet_pay"), { ssr: false });
 
 export default function ModalPay({checked}) {
   const [showModal, setShowModal] = React.useState(false);
+  const {connected} = useCashApp()
   const {items,cartTotal} = useCart()
   return (
     <>
@@ -40,7 +42,15 @@ export default function ModalPay({checked}) {
                 {/*body*/}
                 <div className="relative px-3 flex-auto">
                     <div className=" bg-gray-50 px-4 pt-2">
-                        <p className="text-xl font-medium text-end">{cartTotal}$</p>
+                        <div className="flex items-end text-end justify-end mb-2">
+                          <span className="items-end mr-2">
+                              <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7.2998 5H22L20 12H8.37675M21 16H9L7 3H4M4 8H2M5 11H2M6 14H2M10 20C10 20.5523 9.55228 21 9 21C8.44772 21 8 20.5523 8 20C8 19.4477 8.44772 19 9 19C9.55228 19 10 19.4477 10 20ZM21 20C21 20.5523 20.5523 21 20 21C19.4477 21 19 20.5523 19 20C19 19.4477 19.4477 19 20 19C20.5523 19 21 19.4477 21 20Z" stroke="#000000" stroke-width="1.704" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                          </span>
+                          <p className="text-xl font-bold mt-1 text-end">
+                            {cartTotal}$
+                          </p>
+                        </div>
+
                         <div className="">
                             <div className="relative grid grid-cols-2 mt-2 px-3 py-1 border border-gray-300 rounded-lg shadow-sm">
                                 <p className="text-center text-3xl items-center font-bold">2000</p>
@@ -55,7 +65,7 @@ export default function ModalPay({checked}) {
                             <div className="flex justify-center flex-col items-center mt-5">
                                 <span className="text-center items-center mb-3">Pay with Browser Wallet</span>
                                 {/* <WalletMultiButton/> */}
-                                <WalletPay/>
+                                {connected?(<WalletPay amount={0.1} receiver="BMtZhoKJBRk7p5XvsampmP5Ume5GTb69jetMEoisiyBn"/>):(<WalletMultiButton/>)}
                             </div>
                             <div className="mt-6 border-t-2 border-b py-2">
                                 <div className="flex items-center justify-between flex-col">
