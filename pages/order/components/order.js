@@ -4,7 +4,7 @@ import Transaction from "./transaction"
 
 export default function OrderComponent(){
     return(
-        <div className="flex flex-row ml-[300px]">
+        <div className="flex flex-row ml-auto">
             <Sidebar/>
             <Transaction/>
         </div>

@@ -11,11 +11,12 @@ export default function HeroSelection(){
             {/* <Carousel/> */}
             <EmblaCarousel/>
             <div className="min-h-screen bg-gray-100 flex justify-center">
-                <h1 className="relative text-start text-4xl font-bold mt-5">Featured Products</h1>
-                <div className="absolute m-5 mt-20 flex flex-wrap min-w-screen justify-center">
+                {/* <h1 className="text-start text-4xl font-bold mt-5">Featured Products</h1> */}
+                <div className="mx-auto mt-10 flex flex-wrap min-w-screen justify-center">
                     {product.map((data)=>{
                         return(
-                            <Link href={`/product/${data?.account.id}`} className="relative max-w-sm max-h-[450px] min-w-[340px] bg-white shadow-sm p-2 mx-1 my-3 cursor-pointer">
+                            // max-h-[450px] min-w-[340px]
+                            <Link href={`/product/${data?.account.id}`} className="relative max-h-[450px] max-w-[350px] bg-white shadow-sm p-2 mx-1 my-3 cursor-pointer">
                                 <div className="overflow-x-hidden rounded-lg relative">
                                     <img className="h-80 rounded-2xl w-full object-cover" src={`${data?.account.images}`} alt="hinh san pham"/>
                                     <p className="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">

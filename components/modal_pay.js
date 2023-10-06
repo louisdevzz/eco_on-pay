@@ -65,7 +65,7 @@ export default function ModalPay({checked}) {
                             <div className="flex justify-center flex-col items-center mt-5">
                                 <span className="text-center items-center mb-3">Pay with Browser Wallet</span>
                                 {/* <WalletMultiButton/> */}
-                                {connected?(<WalletPay amount={0.1} receiver="BMtZhoKJBRk7p5XvsampmP5Ume5GTb69jetMEoisiyBn"/>):(<WalletMultiButton/>)}
+                                {connected?(<WalletPay amount={cartTotal*0.0429} receiver="BMtZhoKJBRk7p5XvsampmP5Ume5GTb69jetMEoisiyBn"/>):(<WalletMultiButton/>)}
                             </div>
                             <div className="mt-6 border-t-2 border-b py-2">
                                 <div className="flex items-center justify-between flex-col">
@@ -76,7 +76,6 @@ export default function ModalPay({checked}) {
                         </div>
                     </div>
                 </div>
-                
               </div>
             </div>
           </div>
