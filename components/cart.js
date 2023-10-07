@@ -1,7 +1,8 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState,useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { useCart } from "react-use-cart";
+import { useCashApp } from '@/hooks/cashapp';
 
 export default function CartModal({open,setOpen}) {
   const {
@@ -10,7 +11,7 @@ export default function CartModal({open,setOpen}) {
       items,
       updateItemQuantity,
       emptyCart,
-      removeItem
+      removeItem,
   } = useCart();
     return (
     <Transition.Root show={open} as={Fragment}>

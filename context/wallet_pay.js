@@ -1,15 +1,30 @@
 import { VStack, Button, Image } from "@chakra-ui/react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useCashApp } from "@/hooks/cashapp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Router from "next/router";
+import { useNavigate } from "react-router-dom";
 
 const WalletPay = ({amount,receiver}) => {
   const { select, wallets, publicKey, disconnect } = useWallet();
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const {doTransaction} = useCashApp()
+
   const onPay = async()=>{
     doTransaction({amount,receiver})
   }
+  useEffect(() => { 
+  
+    //Implementing the setInterval method 
+    const interval = setInterval(() => { 
+      navigate('/checkout/order-received')
+      Router.reload()
+    }, 5500); 
+
+    //Clearing the interval 
+    return () => clearInterval(interval); 
+}, []);
 
   return !publicKey ? (
     <VStack gap={4}>

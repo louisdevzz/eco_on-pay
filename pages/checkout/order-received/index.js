@@ -1,7 +1,8 @@
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { useCart } from "react-use-cart"
-
+import { useCashApp } from "@/hooks/cashapp"
+import { useWallet } from "@solana/wallet-adapter-react"
 
 const style = {
     border:"border border-gray-200",
@@ -10,7 +11,10 @@ const style = {
 
 
 export default function OrderRecevied(){
+    const { publicKey } = useWallet();
     const {items,cartTotal} = useCart()
+    const {txnHash} = useCashApp()
+    console.log(txnHash)
     return(
         <>
         <Header/>
@@ -21,11 +25,11 @@ export default function OrderRecevied(){
                 <ul class="mb-3 flex mt-3 ml-10 text-sm text-gray-800">
                     <li class="flex flex-col mr-20"> Order number: <strong className="text-base font-bold">291</strong>
                     </li>
-                    <li class="flex flex-col mr-20"> Date: <strong className="text-base font-bold">October 6, 2023</strong>
+                    <li class="flex flex-col mr-20"> Date: <strong className="text-base font-bold">{new Date().toLocaleString("en-US")}</strong>
                     </li>
                     <li class="flex flex-col mr-20"> Total: <strong>
                         <span className="text-base font-bold">
-                            <bdi>2,59&nbsp; <span class="">€</span>
+                            <bdi>{cartTotal}&nbsp; <span class="">€</span>
                             </bdi>
                         </span>
                         </strong>
@@ -110,16 +114,16 @@ export default function OrderRecevied(){
                             <tr className="grid grid-cols-2 border border-gray-200 py-1 text-center justify-between">
                                 <th>Transaction ID:</th>
                                 <td>
-                                    <a className="text-gray-500 font-normal" href="https://explorer.solana.com/tx/4Tn3gMHrZyZLWskwvs9tifMzixs1rKwKdH79Rh2romRdCT7ETknLXiAmGki8nAs8rDmvgyNDTM2sp8v3cSvuviX9?cluster=devnet" target="_blank">4Tn3gMHrZyZLWsk...M2sp8v3cSvuviX9</a>
+                                    <a className="text-gray-500 font-normal" href={`https://solscan.io/tx/${txnHash}?cluster=devnet`} target="_blank">{truncate(txnHash)}</a>
                                 </td>
                             </tr>
                             <tr className="grid grid-cols-2 text-center border border-gray-200 py-1">
                                 <th>Wallet Address:</th>
-                                <td className=" font-normal">YmFta2y8GGaHTfdZpJBj5ws7VQAMj5ygLXy2hvoCHra</td>
+                                <td className=" font-normal">{publicKey&&publicKey.toBase58()}</td>
                             </tr>
                             <tr className="grid grid-cols-2 text-center border border-gray-200 py-1">
                                 <th>Amount:</th>
-                                <td className="font-normal">0.1190098 SOL</td>
+                                <td className="font-normal">{cartTotal*0.0429} SOL</td>
                             </tr>
                         </tbody>
                     </table>
@@ -129,4 +133,11 @@ export default function OrderRecevied(){
         <Footer/>
         </>
     )
+}
+
+export const truncate = (longstring, limit=20) =>{
+    if(longstring.length>limit){
+      return longstring.substring(0,limit)+'...'
+    }
+    return longstring
 }

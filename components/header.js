@@ -22,7 +22,6 @@ export default function Header(){
     isEmpty,
     totalItems,
 } = useCart();
-console.log(totalItems)
   return(
     <div className={roboto.className} style={{backgroundColor: "white"}}>
   <div className="border py-3 px-6">

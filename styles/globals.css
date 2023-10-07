@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@layer base {
+  /* width */
+  ::-webkit-scrollbar {
+    @apply w-1
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    @apply bg-inherit
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-200  rounded-xl
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-300
+  }
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -23,7 +46,7 @@ font-weight: 500;
 }
 
 .wallet-adapter-button, .wallet-adapter-button-trigger{
-  background-color: "#512da8" !important;
+  background-color: #512da8 !important;
 }
 
 .embla {

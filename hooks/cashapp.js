@@ -7,14 +7,12 @@ import * as anchor from "@project-serum/anchor"
 import idl from '../idl.json'
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
-import { useNavigate } from "react-router-dom"
-import Router from "next/router";
+
 
 const PROGRAM_KEY = new PublicKey(idl.metadata.address)
 
 
 export const useCashApp = () =>{
-    const navigate = useNavigate()
     const {connected, publicKey, sendTransaction} = useWallet()
     const [useAddress, setUseAddress] = useState('Not Data!')
     const {connection} = useConnection()
@@ -26,6 +24,7 @@ export const useCashApp = () =>{
     const [transactionPending, setTransactionPending] = useState(false)
     const [lastProductid, setLastProductid] = useState(0)
     const [product, setProduct] = useState([])
+    
 
 
 
@@ -218,12 +217,17 @@ export const useCashApp = () =>{
         )
         useEffect(()=>{
             localStorage.setItem(storageKey, JSON.stringify(value))
+            const timer = setInterval(() => {
+                localStorage.removeItem(storageKey)
+            }, 60000);
+                         // clearing interval
+            return () => clearInterval(timer);
         },[value,setValue])
         return [value,setValue]
     }
 
     const [transaction, setTransaction] = useLocalStorage("transaction",[])
-
+    const [txnHash,setTxnHash] = useLocalStorage("txnhash",'')
     //create the transaction to send to our wallet and we can sign it from there!
 
     const makeTransaction = async(fromWallet, toWallet, amount, reference) =>{
@@ -262,7 +266,7 @@ export const useCashApp = () =>{
     //create the function to run the transaction. this will added to the button
 
     const doTransaction = async({amount, receiver})=>{
-        setTransactionPending(true)
+        setTransactionPending(false)
         const fromWallet = publicKey
         const toWallet = new PublicKey(receiver)
         const bnAmount = new BigNumber(amount)
@@ -272,7 +276,7 @@ export const useCashApp = () =>{
 
         const txnHash = await sendTransaction(transactions, connection)
         console.log(txnHash)
-
+        setTxnHash(txnHash)
         //create transaction history object
         const newID = (transaction.length + 1).toString()
         const newTransaction = {
@@ -290,12 +294,10 @@ export const useCashApp = () =>{
             transactionDate: new Date(),
             status: 'Completed',
             amount: amount,
-            products: product,
             identifer: '-'
 
         };
-        setTransaction([newTransaction, ...transaction])
-        setTransactionPending(false)
+        setTransaction([newTransaction, ...transaction])        
     }
 
     return {
@@ -315,6 +317,7 @@ export const useCashApp = () =>{
         product,
         initSeller,
         transactionPending,
-        program
+        program,
+        txnHash
     }
 }
